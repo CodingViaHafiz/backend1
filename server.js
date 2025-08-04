@@ -39,7 +39,7 @@ app.use("/posts", postRoute);
 app.use("/users", userRoute);
 
 // Start the server
-app.listen(PORT, () => {
+app.listen("0,0,0,0", () => {
   console.log("ENV PORT:", process.env.PORT);
   console.log(`Server is running on port: ${PORT}`);
 });
