@@ -35,14 +35,14 @@ app.use("/posts", postRoute);
 app.use("/users", userRoute);
 
 // railway deployment
-const path = require("path");
+// const path = require("path");
 
 // Serve React build
-app.use(express.static(path.join(__dirname, "../front-end/build")));
+// app.use(express.static(path.join(__dirname, "../front-end/build")));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../front-end/build/index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../front-end/build/index.html"));
+// });
 
 // start the server
 app.listen(PORT, () => {
