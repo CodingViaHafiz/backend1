@@ -12,7 +12,7 @@ const cors = require("cors");
 const app = express();
 
 // Define port (Railway provides process.env.PORT automatically)
-const PORT = process.env.PORT || 1000;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
@@ -39,7 +39,7 @@ app.use("/posts", postRoute);
 app.use("/users", userRoute);
 
 // Start the server
-app.listen("0,0,0,0", () => {
+app.listen(port, "0.0.0.0", () => {
   console.log("ENV PORT:", process.env.PORT);
-  console.log(`Server is running on port: ${PORT}`);
+  console.log(`Server is running on port: ${port}`);
 });
