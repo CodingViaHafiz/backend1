@@ -39,35 +39,23 @@ exports.login = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      console.log(`[LOGIN] Failed: User not found for email: ${email}`);
       return res.status(404).json({ message: "User not found" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      console.log(`[LOGIN] Failed: Invalid credentials for email: ${email}`);
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const token = jwt.sign(
-      { id: user._id, role: user.role }, // include role in token
+      { id: user._id, role: user.role },
       process.env.JWT_SECRET_KEY,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      // secure: process.env.NODE_ENV === "production" || false,
-      secure: true, // Important for Netlify + Railway (sross origin)
-      sameSite: "None", // Important for Netlify + Railway (sross origin)
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
-    console.log(
-      `[LOGIN] Success: User ${user.email} logged in, token cookie set.`
-    );
-
     res.status(200).json({
       message: "Login successful!",
+      token,
       user: { id: user._id, name: user.name, role: user.role },
     });
   } catch (error) {
@@ -79,13 +67,7 @@ exports.login = async (req, res) => {
 // logout
 exports.logout = async (req, res) => {
   try {
-    res.cookie("token", "", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      expires: new Date(0),
-      path: "/",
-    });
+    // No need to clear cookies anymore
     res.status(200).json({ message: "Logout success!" });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
