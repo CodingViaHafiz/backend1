@@ -57,8 +57,9 @@ exports.login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production" || false,
-      sameSite: "lax",
+      // secure: process.env.NODE_ENV === "production" || false,
+      secure: true, // Important for Netlify + Railway (sross origin)
+      sameSite: "None", // Important for Netlify + Railway (sross origin)
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
     console.log(
@@ -80,7 +81,9 @@ exports.logout = async (req, res) => {
   try {
     res.cookie("token", "", {
       httpOnly: true,
-      expiresIn: new Date(0),
+      secure: true,
+      sameSite: "None",
+      expires: new Date(0),
       path: "/",
     });
     res.status(200).json({ message: "Logout success!" });
