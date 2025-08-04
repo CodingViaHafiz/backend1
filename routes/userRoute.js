@@ -15,7 +15,7 @@ router.get("/", protect, adminOnly, getAllUsers);
 router.delete("/:id", protect, adminOnly, deleteUser);
 
 // fetch user
-router.get("/my", fetchUser);
+router.get("/my", protect, fetchUser);
 // get totalUsers
 router.get("/userStats", protect, adminOnly, TotalUsers);
 
